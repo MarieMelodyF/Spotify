@@ -28,16 +28,14 @@ const Sidebar: React.FC<SidebarProps> = ({
     setSearchPlaylist(normalizedSearch);
   };
 
-  // // filter playlist based on search
+  // Filter playlist based on search
   const filteredPlaylists = playlists.filter((playlist) => {
     const normalizedName = playlist.name
       .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "") // to includes special caracters
+      .replace(/[\u0300-\u036f]/g, "") // to includes special caracters like ë,ö,œ....
       .toLowerCase();
     return normalizedName.includes(searchPlaylist);
   });
-
-  console.log(filteredPlaylists);
 
   return (
     <Stack>
@@ -54,7 +52,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           My Spotify
         </Typography>
 
-        {/* Champ de recherche avec icône de recherche */}
+        {/* Search Input */}
         <Box sx={{ mb: 2, display: "flex", alignItems: "center" }}>
           {!searchOpen ? (
             <IconButton onClick={handleSearchClick}>
@@ -74,7 +72,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           )}
         </Box>
 
-        {/* Contenu de la bibliothèque */}
+        {/* Library */}
         <Box
           sx={{
             width: "auto",

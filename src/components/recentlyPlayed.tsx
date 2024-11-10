@@ -18,7 +18,7 @@ const RecentlyPlayed: React.FC<RecentlyPlayedProps> = ({ token }) => {
   const [recentTracks, setRecentTracks] = useState<SpotifyData["items"]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Récupérer les titres récemment écoutés
+  // Music recently played
   useEffect(() => {
     const fetchRecentlyPlayed = async () => {
       try {
@@ -59,32 +59,49 @@ const RecentlyPlayed: React.FC<RecentlyPlayedProps> = ({ token }) => {
       {loading ? (
         <CircularProgress />
       ) : (
-        <Grid2 container spacing={2}>
+        <Grid2
+          container
+          spacing={2}
+          height={300}
+          width={750}
+          sx={{
+            border: 1,
+            overflowY: "auto",
+            "&::-webkit-scrollbar": {
+              display: "none",
+            },
+            scrollbarWidth: "none",
+          }}
+        >
           {recentTracks.map((item, index) => (
-            <Grid2 key={index}>
+            <Grid2 key={index} p={2} size={{ xs: 12, sm: 4 }}>
               <Card
                 sx={{
                   display: "flex",
-                  flexDirection: "column",
+                  flexDirection: "row",
                   alignItems: "center",
+                  height: 110,
+                  width: 200,
+                  p: 1,
                 }}
               >
                 <CardMedia
                   component="img"
                   sx={{
-                    width: 200,
-                    height: 200,
+                    width: 90,
+                    height: 90,
                     objectFit: "cover",
                   }}
                   image={item.track.album.images[0]?.url}
                   alt={item.track.name}
                 />
                 <CardContent>
-                  <Typography variant="h6" color="text.primary">
+                  <Typography
+                    variant="h6"
+                    color="text.primary"
+                    sx={{ width: "auto" }}
+                  >
                     {item.track.name}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Played at: {new Date(item.played_at).toLocaleString()}
                   </Typography>
                 </CardContent>
               </Card>
