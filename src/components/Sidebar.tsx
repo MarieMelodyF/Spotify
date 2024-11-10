@@ -1,58 +1,96 @@
-import React from "react";
-import { Box, Typography, Button } from "@mui/material";
-import HomeIcon from "@mui/icons-material/Home";
+import React, { Dispatch, SetStateAction, useState } from "react";
+import { Box, Typography, TextField, Stack, IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
 import YourLibrary from "./YourLibrary";
-interface ContentProps {
-  token: string | null;
-  playlists: any[];
-}
 
 interface SidebarProps {
   token: string | null;
   playlists: any[];
-  onLibraryToggle: (open: boolean) => void; // Fonction pour gérer l'ouverture/fermeture
+  handleSearchClick: () => void;
+  searchOpen: boolean;
+  setSearchOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
   token,
   playlists,
-  onLibraryToggle,
+  handleSearchClick,
+  searchOpen,
+  setSearchOpen,
 }) => {
+  const [searchPlaylist, setSearchPlaylist] = useState<string>("");
+
+  const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const normalizedSearch = e.target.value
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+    setSearchPlaylist(normalizedSearch);
+  };
+
+  // // filter playlist based on search
+  const filteredPlaylists = playlists.filter((playlist) => {
+    const normalizedName = playlist.name
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "") // to includes special caracters
+      .toLowerCase();
+    return normalizedName.includes(searchPlaylist);
+  });
+
+  console.log(filteredPlaylists);
+
   return (
-    <Box
-      sx={{
-        width: 400,
-        bgcolor: "background.paper",
-        height: "100vh",
-        padding: 2,
-        position: "fixed", // La sidebar reste fixe sur le côté
-      }}
-    >
-      <Typography variant="h6" gutterBottom>
-        My Spotify
-      </Typography>
-      <Button
-        startIcon={<HomeIcon />}
-        color="primary"
-        fullWidth
-        sx={{ justifyContent: "flex-start" }}
+    <Stack>
+      <Box
+        sx={{
+          width: 400,
+          bgcolor: "background.paper",
+          height: "100vh",
+          padding: 2,
+          position: "fixed",
+        }}
       >
-        Home
-      </Button>
-      <Button
-        startIcon={<SearchIcon />}
-        color="primary"
-        fullWidth
-        sx={{ justifyContent: "flex-start" }}
-      >
-        Search
-      </Button>
-      <Box width={"auto"}>
-        <YourLibrary token={token} playlists={playlists} />
+        <Typography variant="h1" gutterBottom>
+          My Spotify
+        </Typography>
+
+        {/* Champ de recherche avec icône de recherche */}
+        <Box sx={{ mb: 2, display: "flex", alignItems: "center" }}>
+          {!searchOpen ? (
+            <IconButton onClick={handleSearchClick}>
+              <SearchIcon sx={{ fontSize: 20, color: "#1DB954" }} />
+            </IconButton>
+          ) : (
+            <TextField
+              fullWidth
+              variant="standard"
+              placeholder="Rechercher dans la bibliothèque"
+              autoFocus
+              onBlur={() => setSearchOpen(false)}
+              sx={{ borderRadius: 1 }}
+              value={searchPlaylist}
+              onChange={onSearch}
+            />
+          )}
+        </Box>
+
+        {/* Contenu de la bibliothèque */}
+        <Box
+          sx={{
+            width: "auto",
+            height: "calc(100vh - 160px)",
+            overflowY: "auto",
+            // hidden scrollbar
+            "&::-webkit-scrollbar": {
+              display: "none",
+            },
+            scrollbarWidth: "none",
+          }}
+        >
+          <YourLibrary token={token} playlists={filteredPlaylists} />
+        </Box>
       </Box>
-    </Box>
+    </Stack>
   );
 };
 

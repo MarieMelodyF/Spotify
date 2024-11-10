@@ -11,22 +11,21 @@ import {
   Box,
   Button,
   Typography,
-  Drawer,
 } from "@mui/material";
 import theme from "./theme";
 import Sidebar from "./components/Sidebar"; // Si tu veux afficher la Sidebar
-import Content from "./components/YourLibrary";
+import RecentlyPlayed from "./Pages/recentlyPlayed"; // Ajouter RecentlyPlayed ici
 
 const App: React.FC = () => {
   const [playlists, setPlaylists] = useState<any[]>([]);
   const [token, setToken] = useState<string | null>(null);
-  const [drawerOpen, setDrawerOpen] = useState(false); // Gérer l'ouverture/fermeture du Drawer
+  const [searchOpen, setSearchOpen] = useState(false);
 
   // Fonction pour rediriger l'utilisateur vers Spotify pour l'authentification
   const loginWithSpotify = () => {
     const authUrl = `https://accounts.spotify.com/authorize?client_id=${SPOTIFY_CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(
       SPOTIFY_REDIRECT_URI
-    )}&scope=${SPOTIFY_SCOPES.join("%20")}`;
+    )}&scope=${encodeURIComponent(SPOTIFY_SCOPES?.join(" "))}`;
     window.location.href = authUrl;
   };
 
@@ -44,7 +43,7 @@ const App: React.FC = () => {
     }
   }, []);
 
-  // Récupérer les playlists de l'utilisateur une fois connecté
+  // Find user playlist
   useEffect(() => {
     if (token) {
       spotifyApi.getUserPlaylists().then((response) => {
@@ -53,9 +52,9 @@ const App: React.FC = () => {
     }
   }, [token]);
 
-  // Fonction pour ouvrir ou fermer le Drawer
-  const toggleLibrary = (open: boolean) => {
-    setDrawerOpen(open);
+  // Open or hide search bar
+  const handleSearchClick = () => {
+    setSearchOpen((prev) => !prev);
   };
 
   return (
@@ -64,41 +63,71 @@ const App: React.FC = () => {
         <CssBaseline />
 
         {token && (
-          <Sidebar
-            token={token}
-            playlists={playlists}
-            onLibraryToggle={toggleLibrary}
-          />
-        )}
-        {/* Contenu principal */}
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          {!token && (
+          <Box sx={{ display: "flex", height: "100vh" }}>
+            {/* Sidebar à gauche */}
             <Box
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
+                width: 300,
+                padding: 2,
+                position: "fixed",
+                top: 0,
+                left: 0,
+                bottom: 0,
+                overflowY: "auto",
               }}
             >
-              <Typography variant="h4" color="text.primary" gutterBottom>
-                Connectez-vous à Spotify
-              </Typography>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={loginWithSpotify}
-              >
-                Se connecter avec Spotify
-              </Button>
+              <Sidebar
+                token={token}
+                playlists={playlists}
+                handleSearchClick={handleSearchClick}
+                searchOpen={searchOpen}
+                setSearchOpen={setSearchOpen}
+              />
             </Box>
-          )}
-        </Box>
+
+            {/* Contenu principal à droite */}
+            <Box
+              sx={{
+                marginLeft: 55,
+                flexGrow: 1,
+                padding: 2,
+                // overflowY: "auto",
+              }}
+            >
+              <RecentlyPlayed token={token} />
+              <Typography>
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nisi
+                assumenda earum, voluptatem dolore laborum ducimus ab aspernatur
+                quidem ullam aut repudiandae est soluta molestiae vero dolorem!
+                Rem quia accusantium adipisci!
+              </Typography>
+            </Box>
+          </Box>
+        )}
+
+        {/* Contenu principal si pas connecté */}
+        {!token && (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              minHeight: "100vh",
+            }}
+          >
+            <Typography variant="h4" color="text.primary" gutterBottom>
+              Connectez-vous à Spotify
+            </Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={loginWithSpotify}
+            >
+              Se connecter avec Spotify
+            </Button>
+          </Box>
+        )}
       </ThemeProvider>
     </div>
   );

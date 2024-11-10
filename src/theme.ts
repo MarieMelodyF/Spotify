@@ -10,51 +10,76 @@ const theme = createTheme({
       main: "#191414", // Couleur secondaire sombre
     },
     background: {
-      default: "#121212", // Fond sombre
-      paper: "#181818", // Fond des éléments (comme les cartes)
+      default: "#121212", // Fond sombre global
+      paper: "#181818", // Fond pour les éléments comme les cartes
     },
     text: {
       primary: "#FFFFFF", // Texte principal en blanc
       secondary: "#B3B3B3", // Texte secondaire
     },
     action: {
-      hover: "rgba(255, 255, 255, 0.1)", // Effet de survol en transparence
+      hover: "rgba(255, 255, 255, 0.1)", // Effet de survol pour les cartes
     },
   },
   typography: {
-    fontFamily: "Roboto, sans-serif", // Police de l'application
-    h6: {
-      fontWeight: 600,
-    },
+    fontFamily: "Roboto, sans-serif",
     subtitle1: {
       fontWeight: 500,
+      fontSize: 13,
+    },
+    subtitle2: {
+      fontWeight: 350,
+      fontSize: 12,
+    },
+    h1: {
+      fontWeight: 600,
+      fontSize: 17,
+    },
+    h2: {
+      fontWeight: 500,
+      fontSize: 15,
+    },
+    h3: {
+      fontWeight: 400,
+      fontSize: 14,
+    },
+    h4: {
+      fontWeight: 300,
+
+      fontSize: 13,
+    },
+    h5: {
+      fontWeight: 300,
+      fontSize: 12,
+    },
+    h6: {
+      fontWeight: 200,
+      fontSize: 12,
     },
   },
+
   components: {
     MuiCard: {
       styleOverrides: {
         root: {
-          transition: "background-color 0.3s ease", // Ajoute la transition de couleur
+          backgroundColor: "#181818", // Fond des cartes
+          transition: "background-color 0.3s ease",
+          "&:hover": {
+            backgroundColor: "rgba(255, 255, 255, 0.1)",
+
+            boxShadow: "0 6px 12px rgba(0, 0, 0, 0.2)",
+          },
         },
       },
     },
     MuiCardMedia: {
       styleOverrides: {
         root: {
-          borderRadius: "8px", // Coins arrondis sur l'image
+          borderRadius: "8px",
         },
       },
     },
   },
-  //   MuiBox: {
-  //     styleOverrides: {
-  //       root: {
-  //         display: "flex",
-  //         justifyContent: "center",
-  //         alignItems: "center",
-  //       },
-  //     },
-  //   },
 });
 
 export default theme;

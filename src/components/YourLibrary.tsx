@@ -7,74 +7,90 @@ import {
   CardContent,
   Grid2,
 } from "@mui/material";
-import PlayCircleIcon from "@mui/icons-material/PlayCircle";
+import { PlayArrow } from "@mui/icons-material";
 
 interface ContentProps {
   token: string | null;
   playlists: any[];
 }
 
-const Content: React.FC<ContentProps> = ({ token, playlists }) => {
+const YourLibrary: React.FC<ContentProps> = ({ playlists }) => {
+  console.log(playlists);
   return (
-    <Box sx={{ flexGrow: 1, bgcolor: "background.default", padding: 3 }}>
-      <Typography variant="h6" color="text.primary" gutterBottom>
+    <Box sx={{ flexGrow: 1, bgcolor: "background.default", padding: 1 }}>
+      <Typography variant="h2" color="text.primary" gutterBottom>
         Your Playlists
       </Typography>
-      <Grid2 container spacing={2}>
+      <Grid2 container spacing={2} direction="column">
         {playlists.map((playlist, index) => (
-          <Grid2 key={index} component={"body"}>
+          <Grid2 container key={index} p={1}>
             <Card
               sx={{
                 display: "flex",
                 alignItems: "center",
                 position: "relative",
-                backgroundColor: "background.paper", // Applique la couleur de fond personnalisée
-                borderRadius: 2, // Coins arrondis pour les cartes
-                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", // Ombrage léger
-                "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.1)", // Changement de couleur au survol
-                  boxShadow: "0 6px 12px rgba(0, 0, 0, 0.15)", // Ombrage au survol
-                },
+                borderRadius: 2,
+                height: 95,
+                width: "100%",
+                p: 1,
               }}
             >
-              <CardMedia
-                component="img"
-                sx={{
-                  maxWidth: 120,
-                  height: 80,
-                  objectFit: "cover",
-                  transition: "opacity 0.3s ease",
-                  borderRadius: 1, // Coins arrondis pour l'image
-                  "&:hover": {
-                    opacity: 0.2, // Effet de transparence sur l'image au survol
-                  },
-                }}
-                image={playlist.images[0]?.url}
-                alt={playlist.name}
-              />
-              <CardContent sx={{ flexGrow: 1, paddingLeft: 2, width: 260 }}>
-                <Typography variant="subtitle1" color="text.primary">
-                  {playlist.name}
-                </Typography>
-              </CardContent>
-              {/* Logo Play au centre */}
               <Box
                 sx={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  opacity: 0,
-                  transition: "opacity 0.3s ease",
-                  "&:hover": {
-                    opacity: 1, // Affiche le logo play au survol
-                  },
+                  position: "relative",
+                  width: 80,
+                  height: 80,
+                  padding: 1,
                 }}
               >
-                <PlayCircleIcon
-                  sx={{ fontSize: 50, color: "rgba(255, 255, 255, 0.7)" }}
+                {/* Img playlist */}
+                <CardMedia
+                  component="img"
+                  sx={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    borderRadius: "8px",
+                    transition: "opacity 0.3s ease",
+                    "&:hover": {
+                      opacity: 0.3,
+                    },
+                    border: 1,
+                  }}
+                  image={playlist.images[0]?.url || "default-image-url"}
+                  alt={playlist.name}
                 />
+                {/* Icône Play */}
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    opacity: 0,
+                    transition: "opacity 0.3s ease",
+                    "&:hover": {
+                      opacity: 1,
+                    },
+                  }}
+                >
+                  <PlayArrow
+                    sx={{ fontSize: 40, color: "rgba(255, 255, 255, 0.9)" }}
+                  />
+                </Box>
               </Box>
+
+              {/* playlist Infos */}
+              <CardContent sx={{ paddingLeft: 2, width: "calc(100% - 80px)" }}>
+                <Typography variant="subtitle1" color="text.primary">
+                  {playlist.name.length > 50
+                    ? playlist.name.substring(0, 50) + "..."
+                    : playlist.name}
+                </Typography>
+                <Typography variant="subtitle2" color="text.primary">
+                  {playlist.type} {"."} {playlist.owner.display_name}
+                </Typography>
+              </CardContent>
             </Card>
           </Grid2>
         ))}
@@ -83,4 +99,4 @@ const Content: React.FC<ContentProps> = ({ token, playlists }) => {
   );
 };
 
-export default Content;
+export default YourLibrary;
