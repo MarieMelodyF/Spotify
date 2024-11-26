@@ -15,7 +15,6 @@ interface ContentProps {
 }
 
 const YourLibrary: React.FC<ContentProps> = ({ playlists }) => {
-  console.log(playlists);
   return (
     <Box sx={{ flexGrow: 1, bgcolor: "background.default", padding: 1 }}>
       <Typography variant="h2" color="text.primary" gutterBottom>

@@ -1,3 +1,4 @@
+// import axios from "axios";
 import spotifyApi from "../spotify";
 
 const API_BASE_URL = "https://api.spotify.com/v1";
@@ -57,3 +58,34 @@ export const fetchRecentlyPlayed = async (token: string) => {
     throw error;
   }
 };
+
+// masthead endpoint
+// export const fetchMastheadData = async () => {
+//   try {
+//     const response = await fetch(
+//       "https://www.spotify.com/api/masthead/v1/masthead?market=fr"
+//     );
+//     console.log("===>", response);
+
+//     if (!response.ok) {
+//       throw new Error("Erreur lors de la récupération des données Masthead.");
+//     }
+
+//     return response.json();
+//   } catch (error) {
+//     console.error(error);
+//     throw error;
+//   }
+// };
+
+// export const fetchMastheadData = async () => {
+//   try {
+//     const response = await axios.get(
+//       `https://www.spotify.com/api/masthead/v1/masthead?market=fr` // URL du backend local
+//     );
+//     return response.data; // Retourner les données Masthead
+//   } catch (error) {
+//     console.error("Erreur lors de la récupération des données Masthead", error);
+//     throw error;
+//   }
+// };

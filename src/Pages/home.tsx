@@ -10,7 +10,7 @@ import theme from "../theme";
 import Sidebar from "../components/Sidebar";
 import RecentlyPlayed from "../components/recentlyPlayed";
 import { toggleSearch } from "../Functions/ToggleSearch";
-import { fetchUserPlaylists } from "../Functions/FetchUserPlaylist";
+import { fetchUserPlaylists } from "../Functions/Fetchs";
 
 type HomeProps = {
   token: string | null;
