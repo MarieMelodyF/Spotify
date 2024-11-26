@@ -22,6 +22,7 @@ const YourLibrary: React.FC<ContentProps> = ({ playlists }) => {
         bgcolor: "background.default",
         padding: 1,
         maxWidth: 400,
+        borderRadius: 2,
       }}
     >
       <Typography variant="h2" color="text.primary" gutterBottom>
@@ -36,7 +37,7 @@ const YourLibrary: React.FC<ContentProps> = ({ playlists }) => {
                 alignItems: "center",
                 position: "relative",
                 borderRadius: 2,
-                height: 95,
+                height: 110,
                 width: "100%",
                 p: 1,
               }}
@@ -87,8 +88,14 @@ const YourLibrary: React.FC<ContentProps> = ({ playlists }) => {
               </Box>
 
               {/* playlist Infos */}
-              <CardContent sx={{ paddingLeft: 2, width: "calc(100% - 80px)" }}>
-                <Typography variant="subtitle1" color="text.primary">
+              <CardContent
+                sx={{
+                  paddingLeft: 2,
+                  width: "calc(100% - 80px)",
+                  margin: 1,
+                }}
+              >
+                <Typography variant="subtitle2" color="text.primary">
                   {playlist.name.length > 50
                     ? playlist.name.substring(0, 50) + "..."
                     : playlist.name}
