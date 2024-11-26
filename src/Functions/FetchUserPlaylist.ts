@@ -34,6 +34,7 @@ export const fetchPlaylistTracks = (playlistId: string) => {
   return fetchFromSpotify(`/playlists/${playlistId}/tracks`);
 };
 
+// recently played endpoint
 export const fetchRecentlyPlayed = async (token: string) => {
   try {
     const response = await fetch(
@@ -51,6 +52,23 @@ export const fetchRecentlyPlayed = async (token: string) => {
       );
     }
 
+    return response.json();
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const fetchTopItems = async (token: string, type: string) => {
+  try {
+    const response = await fetch(`https://api.spotify.com/v1/me/top/${type}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`Erreur lors de la récupération des ${type}.`);
+    }
     return response.json();
   } catch (error) {
     console.error(error);

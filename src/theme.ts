@@ -15,7 +15,7 @@ const theme = createTheme({
     },
     text: {
       primary: "#FFFFFF", // Texte principal en blanc
-      secondary: "#B3B3B3", // Texte secondaire
+      secondary: "#000000", // Texte secondaire
     },
     action: {
       hover: "rgba(255, 255, 255, 0.1)", // Effet de survol pour les cartes

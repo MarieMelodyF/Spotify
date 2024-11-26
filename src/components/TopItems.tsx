@@ -8,48 +8,26 @@ import {
   Grid2,
 } from "@mui/material";
 import { CircularProgress } from "@mui/material";
-import { SpotifyData } from "../Types/RecentTracks"; // Importez le type SpotifyData
-import { fetchRecentlyPlayed } from "../Functions/Fetchs";
+import { TopTracks } from "../Types/TopItems";
 import { fetchTopItems } from "../Functions/FetchUserPlaylist";
 import BoxPanel from "./BoxPanel";
-// import axios from "axios";
 
-interface RecentlyPlayedProps {
+interface TopItemsProps {
   token: string;
 }
-interface topItems {
-  title: string;
-  description: string;
-  image: string;
-}
 
-const RecentlyPlayed: React.FC<RecentlyPlayedProps> = ({ token }) => {
-  const [recentTracks, setRecentTracks] = useState<SpotifyData["items"]>([]);
+const TopItems: React.FC<TopItemsProps> = ({ token }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null); // Nouvel état pour les erreurs
-  const [topItems, setTopItems] = useState<topItems | null>(null);
-
-  // Music recently played
-  useEffect(() => {
-    if (token) {
-      fetchRecentlyPlayed(token)
-        .then((data) => {
-          setRecentTracks(data.items);
-          setLoading(false);
-        })
-        .catch((err) => {
-          setError("Impossible de récupérer les morceaux récemment écoutés.");
-          setLoading(false);
-        });
-    }
-  }, [token]);
+  const [topItems, setTopItems] = useState<TopTracks["items"]>([]);
+  console.log("topItems", topItems);
 
   useEffect(() => {
     if (token)
       fetchTopItems(token, "tracks")
         .then((data) => {
-          setTopItems(data);
-          console.log(data.items);
+          setTopItems(data.items);
+          setLoading(false);
         })
         .catch((err) => {
           setError("Impossible de récupérer les top items.");
@@ -58,9 +36,9 @@ const RecentlyPlayed: React.FC<RecentlyPlayedProps> = ({ token }) => {
   }, []);
 
   return (
-    <BoxPanel>
+    <BoxPanel maxwdith={400} borderRadius={2}>
       <Typography variant="h4" color="text.primary" gutterBottom>
-        Recently Played
+        Top items
       </Typography>
 
       {loading ? (
@@ -79,7 +57,7 @@ const RecentlyPlayed: React.FC<RecentlyPlayedProps> = ({ token }) => {
             scrollbarWidth: "none",
           }}
         >
-          {recentTracks.map((item, index) => (
+          {topItems.map((item, index) => (
             <Grid2 key={index} p={2} size={{ xs: 12, sm: 4 }}>
               <Card
                 sx={{
@@ -99,16 +77,17 @@ const RecentlyPlayed: React.FC<RecentlyPlayedProps> = ({ token }) => {
                     height: 90,
                     objectFit: "cover",
                   }}
-                  image={item.track.album.images[0]?.url}
-                  alt={item.track.name}
+                  image={item.album.images[0]?.url}
+                  alt={item.name}
                 />
                 <CardContent>
                   <Typography
                     variant="h6"
                     color="text.primary"
                     sx={{ width: "auto" }}
+                    width={160}
                   >
-                    {item.track.name}
+                    {item.album.name}
                   </Typography>
                 </CardContent>
               </Card>
@@ -120,4 +99,4 @@ const RecentlyPlayed: React.FC<RecentlyPlayedProps> = ({ token }) => {
   );
 };
 
-export default RecentlyPlayed;
+export default TopItems;

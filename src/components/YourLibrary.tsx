@@ -16,7 +16,14 @@ interface ContentProps {
 
 const YourLibrary: React.FC<ContentProps> = ({ playlists }) => {
   return (
-    <Box sx={{ flexGrow: 1, bgcolor: "background.default", padding: 1 }}>
+    <Box
+      sx={{
+        flexGrow: 1,
+        bgcolor: "background.default",
+        padding: 1,
+        maxWidth: 400,
+      }}
+    >
       <Typography variant="h2" color="text.primary" gutterBottom>
         Your Playlists
       </Typography>

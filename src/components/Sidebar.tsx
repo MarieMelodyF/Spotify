@@ -2,6 +2,7 @@ import React, { Dispatch, SetStateAction, useState } from "react";
 import { Box, Typography, TextField, Stack, IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import YourLibrary from "./YourLibrary";
+import BoxPanel from "./BoxPanel";
 
 interface SidebarProps {
   token: string | null;
@@ -39,15 +40,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <Stack>
-      <Box
-        sx={{
-          width: 400,
-          bgcolor: "background.paper",
-          height: "100vh",
-          padding: 2,
-          position: "fixed",
-        }}
-      >
+      <BoxPanel>
         <Typography variant="h1" gutterBottom>
           My Spotify
         </Typography>
@@ -76,7 +69,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         <Box
           sx={{
             width: "auto",
-            height: "calc(100vh - 160px)",
+            height: "calc(100vh - 130px)",
             overflowY: "auto",
             // hidden scrollbar
             "&::-webkit-scrollbar": {
@@ -87,7 +80,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         >
           <YourLibrary token={token} playlists={filteredPlaylists} />
         </Box>
-      </Box>
+      </BoxPanel>
     </Stack>
   );
 };
